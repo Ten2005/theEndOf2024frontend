@@ -13,6 +13,7 @@ export function useChatSession(imageCount: number) {
   const [showBrainstorming, setShowBrainstorming] = useState(true);
   const [showCompletion, setShowCompletion] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const url = 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
 
   const { user } = useAuth();
 
@@ -22,7 +23,7 @@ export function useChatSession(imageCount: number) {
     try {
       const messageContents = newMessages.map(message => message.content);
 
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch(url + '/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +74,7 @@ export function useChatSession(imageCount: number) {
       } else {
         // すべての画像セッション完了
         try {
-          await fetch('http://localhost:8000/complete', {
+          await fetch(url + '/complete', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

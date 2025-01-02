@@ -20,6 +20,7 @@ export function Review() {
   const [emotionData, setEmotionData] = useState<EmotionData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
+  const url = 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
 
   useEffect(() => {
     if (!user) {
@@ -27,7 +28,7 @@ export function Review() {
     }
     if (user) {
       // Get sessions data from FastAPI
-      fetch('http://localhost:8000/sessions', {
+      fetch(url + '/sessions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

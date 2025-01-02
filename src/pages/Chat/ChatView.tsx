@@ -29,10 +29,11 @@ export function ChatView({ imageCount }: ChatViewProps) {
   
   const [input, setInput] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const url = 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
 
   const summarize = async (text: string) => {
     try {
-      const response = await fetch('http://localhost:8000/summarize', {
+      const response = await fetch(url + '/summarize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
