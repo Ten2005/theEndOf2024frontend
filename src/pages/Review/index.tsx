@@ -49,7 +49,7 @@ export function Review() {
           console.log(data);
           setSessions(data.map((session: Session) => ({
             id: session.id,
-            timestamp: session.time_stamp,
+            timestamp: new Date(session.time_stamp),
             imageSessions: session.image_sessions
           })));
           setEmotionData(data.map((session: Session) => ({

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { AuthGuard } from '@/components/AuthGuard';
 import { Toaster } from '@/components/ui/toaster';
@@ -11,7 +11,7 @@ import { Login } from '@/pages/Login';
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -20,7 +20,7 @@ export default function App() {
           <Route path="/review" element={<AuthGuard><Review /></AuthGuard>} />
         </Routes>
         <Toaster />
-      </BrowserRouter>
+      </Router>
     </AuthProvider>
   );
 }
