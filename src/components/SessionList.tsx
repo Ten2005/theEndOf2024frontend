@@ -30,7 +30,7 @@ export function SessionList({ sessions, onSelectSession }: SessionListProps) {
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground mt-1">
                     <Clock className="w-4 h-4 mr-1" />
-                    {session.timestamp}
+                    {session.time_stamp.toLocaleString()}
                   </div>
                 </div>
               </div>
