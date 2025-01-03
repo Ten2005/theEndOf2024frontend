@@ -81,7 +81,7 @@ export function useChatSession(imageCount: number) {
             },
             body: JSON.stringify({
               user_id: user?.id,
-              messages: messages.map(m => ({
+              messages: newMessages.map(m => ({
                 id: m.id,
                 content: m.content,
                 isUser: m.isUser
