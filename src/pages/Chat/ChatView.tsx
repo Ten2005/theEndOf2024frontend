@@ -17,6 +17,7 @@ interface ChatViewProps {
 
 
 export function ChatView({ imageCount }: ChatViewProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {
     currentImage,
@@ -61,10 +62,15 @@ export function ChatView({ imageCount }: ChatViewProps) {
     handleUserMessage(summary);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    handleUserMessage(input);
-    setInput('');
+    setIsLoading(true);
+    try {
+      await handleUserMessage(input);
+      setInput('');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleAbort = () => {
@@ -127,7 +133,7 @@ export function ChatView({ imageCount }: ChatViewProps) {
           <Button
             onClick={handleSend}
             className="self-end"
-            disabled={!input.trim()}
+            disabled={!input.trim() || isLoading}
           >
             <Send className="w-4 h-4" />
           </Button>
