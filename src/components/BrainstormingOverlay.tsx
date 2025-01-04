@@ -15,25 +15,20 @@ export function BrainstormingOverlay({
   currentImage, 
   onComplete 
 }: BrainstormingOverlayProps) {
-  const [responses, setResponses] = useState<string[]>([]);
+  // const [responses, setResponses] = useState<string[]>([]);
   const [currentResponse, setCurrentResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmitResponse = () => {
-    if (currentResponse.trim()) {
-      setIsLoading(true);
-      setResponses([...responses, currentResponse.trim()]);
-      setCurrentResponse('');
-      handleComplete();
-      setIsLoading(false);
-    }
+  const handleSubmitResponse = async () => {
+    // setResponses([...responses, currentResponse.trim()]);
+    setCurrentResponse('');
+    await handleComplete();
   };
 
-  const handleComplete = () => {
-    if (responses.length > 0) {
-      setIsLoading(true);
-      onComplete(responses);
-    }
+  const handleComplete = async () => {
+    setIsLoading(true);
+    await onComplete([currentResponse]);
+    setIsLoading(false);
   };
 
   return (
