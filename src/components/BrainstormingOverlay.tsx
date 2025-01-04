@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { CheckCircle } from 'lucide-react';
+// import { CheckCircle } from 'lucide-react';
 
 interface BrainstormingOverlayProps {
   imageCount: number;
@@ -21,8 +21,11 @@ export function BrainstormingOverlay({
 
   const handleSubmitResponse = () => {
     if (currentResponse.trim()) {
+      setIsLoading(true);
       setResponses([...responses, currentResponse.trim()]);
       setCurrentResponse('');
+      handleComplete();
+      setIsLoading(false);
     }
   };
 
@@ -59,7 +62,7 @@ export function BrainstormingOverlay({
         </div>
 
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
+          {/* <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">
               入力回数: {responses.length}（制限なし）
             </span>
@@ -72,22 +75,22 @@ export function BrainstormingOverlay({
               <CheckCircle className="w-4 h-4 mr-2" />
               完了
             </Button>
-          </div>
+          </div> */}
 
           <div className="space-y-2">
             <Textarea
               value={currentResponse}
               onChange={(e) => setCurrentResponse(e.target.value)}
-              placeholder="思うことを自由に入力して下さい..."
+              placeholder={isLoading ? "分析中..." : "思うことを自由に入力して下さい..."}
               className="resize-none"
               rows={4}
             />
             <Button
               className="w-full"
               onClick={handleSubmitResponse}
-              disabled={!currentResponse.trim()}
+              disabled={!currentResponse.trim() || isLoading}
             >
-              追加
+              完了
             </Button>
           </div>
         </div>
