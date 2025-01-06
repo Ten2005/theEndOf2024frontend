@@ -8,7 +8,10 @@ export function Main() {
       <BackgroundGrid />
       
       <div className="relative container mx-auto px-4 min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary animate-gradient-x">
+        <h1 className="
+        text-2xl font-serif font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary animate-gradient-x
+        sm:text-4xl md:text-5xl lg:text-6xl
+        ">
           Art&Innovation
         </h1>
         

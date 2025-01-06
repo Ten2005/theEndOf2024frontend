@@ -14,7 +14,10 @@ export function Home() {
             <MessageSquareText className="w-8 h-8 md:w-12 md:h-12 text-primary animate-pulse delay-300" />
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+          <h1 className="
+          text-4xl font-serif font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80
+          sm:text-4xl md:text-6xl lg:text-7xl
+          ">
             Art&Innovation
           </h1>
           

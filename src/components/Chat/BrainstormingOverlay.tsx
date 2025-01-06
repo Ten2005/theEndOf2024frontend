@@ -33,7 +33,7 @@ export function BrainstormingOverlay({
 
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
-      <Card className="w-full max-w-2xl p-6 space-y-6">
+      <Card className="w-full max-w-2xl p-6 space-y-6 h-[80vh] overflow-y-auto">
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-bold">画像 {currentImage} / {imageCount}</h2>
           <p className="text-muted-foreground">

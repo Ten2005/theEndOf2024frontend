@@ -5,8 +5,8 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send } from 'lucide-react';
-import { BrainstormingOverlay } from '@/components/BrainstormingOverlay';
 import { CompletionOverlay } from '@/components/Chat/CompletionOverlay';
+import { BrainstormingOverlay } from '@/components/Chat/BrainstormingOverlay';
 import { ConfirmDialog } from '@/components/Chat/ConfirmDialog';
 import { ChatHeader } from '@/components/Chat/ChatHeader';
 import { useChatSession } from '@/hooks/useChatSession';
@@ -83,7 +83,7 @@ export function ChatView({ imageCount }: ChatViewProps) {
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col items-center justify-center p-4">
       {showBrainstorming && (
         <BrainstormingOverlay
           imageCount={imageCount}
@@ -121,7 +121,7 @@ export function ChatView({ imageCount }: ChatViewProps) {
         </div>
       </ScrollArea>
 
-      <div className="p-4 border-t">
+      <div className="py-4 border-t w-full max-w-screen-sm">
         <div className="flex gap-2">
           <Textarea
             value={input}

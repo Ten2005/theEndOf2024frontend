@@ -9,7 +9,7 @@ interface ChatHeaderProps {
 
 export function ChatHeader({ currentImage, imageCount, onAbort }: ChatHeaderProps) {
   return (
-    <div className="p-4 border-b flex justify-between items-center">
+    <div className="p-4 border-b flex justify-between items-center w-full">
       <h2 className="text-lg font-semibold">
         画像 {currentImage} / {imageCount}
       </h2>

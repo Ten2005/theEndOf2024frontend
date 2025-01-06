@@ -8,9 +8,10 @@ interface InstructionsProps {
 
 export function Instructions({ onContinue }: InstructionsProps) {
   return (
-    <Card className="max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">TAT×Chat</h2>
-      
+    <div className="min-h-screen bg-background p-4 flex flex-col items-center justify-center">
+      <Card className="max-w-2xl mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-6">TAT×Chat</h2>
+        
       <ScrollArea className="h-[400px] pr-4">
         <div className="space-y-4">
           <section>
@@ -50,5 +51,6 @@ export function Instructions({ onContinue }: InstructionsProps) {
         </Button>
       </div>
     </Card>
+    </div>
   );
 }

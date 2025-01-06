@@ -13,9 +13,10 @@ interface ImageSelectorProps {
 
 export function ImageSelector({ onSelect }: ImageSelectorProps) {
   return (
-    <Card className="max-w-md mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-center">画像枚数を選択</h2>
-      
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+      <Card className="max-w-md mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-6 text-center">画像枚数を選択</h2>
+        
       <div className="space-y-6">
         <Select onValueChange={(value) => onSelect(Number(value))}>
           <SelectTrigger>
@@ -35,5 +36,6 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
         </p>
       </div>
     </Card>
+    </div>
   );
 }
