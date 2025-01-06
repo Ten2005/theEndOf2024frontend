@@ -42,7 +42,7 @@ export function BrainstormingOverlay({
         </div>
 
         <div className="flex justify-center">
-          <div className="w-96 h-96 bg-muted flex items-center justify-center overflow-auto">
+          <div className="w-96 bg-muted flex items-center justify-center overflow-auto">
             <img
               src={`/images/${currentImage}.png`}
               alt={`Image ${currentImage}`}
