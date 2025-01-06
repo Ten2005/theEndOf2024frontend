@@ -14,7 +14,7 @@ interface ImageSelectorProps {
 export function ImageSelector({ onSelect }: ImageSelectorProps) {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center">
-      <Card className="max-w-md mx-auto p-6">
+      <Card className="max-w-md mx-auto p-6 w-full max-w-lg h-screen max-h-48">
         <h2 className="text-2xl font-bold mb-6 text-center">画像枚数を選択</h2>
         
       <div className="space-y-6">

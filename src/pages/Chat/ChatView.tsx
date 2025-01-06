@@ -106,8 +106,8 @@ export function ChatView({ imageCount }: ChatViewProps) {
         onAbort={handleAbort}
       />
 
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
+      <ScrollArea className="flex-1 p-4 w-full max-w-screen-lg">
+        <div className="space-y-4 w-full max-w-screen-lg w-full">
           {messages.map((message) => (
             <Card
               key={message.id}
@@ -121,7 +121,7 @@ export function ChatView({ imageCount }: ChatViewProps) {
         </div>
       </ScrollArea>
 
-      <div className="py-4 border-t w-full max-w-screen-sm">
+      <div className="py-4 border-t w-full max-w-screen-lg">
         <div className="flex gap-2">
           <Textarea
             value={input}
