@@ -2,9 +2,17 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface Message {
-  id: string;
+  role: string;
   content: string;
-  isUser: boolean;
+  chatRound: number;
+  imageNumber: number;
+}
+
+// Add interface for completion request to match Python model
+interface CompleteRequest {
+  user_id: string;  // Make this required to match Python model
+  messages: Message[];
+  timestamp: string;
 }
 
 export function useChatSession(imageCount: number) {
@@ -13,25 +21,23 @@ export function useChatSession(imageCount: number) {
   const [showBrainstorming, setShowBrainstorming] = useState(true);
   const [showCompletion, setShowCompletion] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const url = 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
+  const url = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:8000'
+    : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
 
   const { user } = useAuth();
 
   const CHAT_ROUNDS = 3;
 
-  const generateResponse = async (content: string, newMessages: Message[], chatRound: number) => {
+  const generateResponse = async (newMessages: Message[]) => {
     try {
-      const messageContents = newMessages.map(message => message.content);
-
       const response = await fetch(url + '/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content,
-          messages: messageContents,
-          chatRound
+          messages: newMessages,
         }),
       });
 
@@ -50,19 +56,21 @@ export function useChatSession(imageCount: number) {
   const handleUserMessage = async (content: string) => {
     const newMessages = [
       ...messages,
-      { id: Date.now().toString(), content, isUser: true }
+      { role: 'user', content, chatRound: chatRound, imageNumber: imageCount }
     ];
 
     setMessages(newMessages);
 
     if (chatRound < CHAT_ROUNDS) {
-      const response = await generateResponse(content, newMessages, chatRound);
+      const response = await generateResponse(newMessages);
       // AIの応答を追加
       newMessages.push({
-        id: (Date.now() + 1).toString(),
+        role: 'assistant',
         content: response,
-        isUser: false
+        chatRound: chatRound,
+        imageNumber: imageCount
       });
+      setMessages(newMessages);
       setChatRound(chatRound + 1);
     } else {
       await Promise.resolve(setMessages(newMessages));
@@ -73,21 +81,19 @@ export function useChatSession(imageCount: number) {
         setShowBrainstorming(true);
       } else {
         // すべての画像セッション完了
+        const completionData: CompleteRequest = {
+          user_id: user?.id || '',  // Add fallback for type safety
+          messages: newMessages,
+          timestamp: new Date().toISOString()
+        };
+        console.log(completionData);
         try {
           await fetch(url + '/complete', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              user_id: user?.id,
-              messages: newMessages.map(m => ({
-                id: m.id,
-                content: m.content,
-                isUser: m.isUser
-              })),
-              timestamp: new Date().toISOString()
-            }),
+            body: JSON.stringify(completionData),
           });
         } catch (error) {
           console.error('Error sending completion data:', error);

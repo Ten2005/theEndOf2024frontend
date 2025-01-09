@@ -30,7 +30,9 @@ export function ChatView({ imageCount }: ChatViewProps) {
   
   const [input, setInput] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const url = 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
+  const url = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:8000'
+    : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
 
   const summarize = async (text: string) => {
     try {
@@ -108,11 +110,11 @@ export function ChatView({ imageCount }: ChatViewProps) {
 
       <ScrollArea className="flex-1 p-4 w-full max-w-screen-lg">
         <div className="space-y-4 w-full max-w-screen-lg w-full">
-          {messages.map((message) => (
+          {messages.map((message, index) => (
             <Card
-              key={message.id}
+              key={index}
               className={`p-4 max-w-[80%] ${
-                message.isUser ? 'ml-auto bg-primary/10' : 'bg-secondary'
+                message.role === 'user' ? 'ml-auto bg-primary/10' : 'bg-secondary'
               }`}
             >
               <pre className="whitespace-pre-wrap font-sans">{message.content}</pre>

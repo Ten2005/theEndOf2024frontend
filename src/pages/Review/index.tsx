@@ -10,8 +10,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft } from 'lucide-react';
 import { EmotionGraph } from '@/components/EmotionGraph';
 import { SessionList } from '@/components/SessionList';
-import type { TATSession, ImageSession, EmotionData, Session } from '@/lib/types';
+import type { TATSession, EmotionData, Message } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
+
+interface ReviewData {
+  id: string;
+  user_id: string;
+  time_stamp: Date;
+  content: Message[];
+  emotions: {
+    joy: number;
+    sadness: number;
+    anger: number;
+    fear: number;
+  };
+}
 
 export function Review() {
   const navigate = useNavigate();
@@ -20,15 +33,19 @@ export function Review() {
   const [emotionData, setEmotionData] = useState<EmotionData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
-  const url = 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
+  const url = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:8000'
+    : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
 
   useEffect(() => {
+    console.log('Selected Session:', selectedSession);
+    console.log('Contents:', selectedSession?.contents);
     if (!user) {
       navigate('/login');
     }
     if (user) {
       // Get sessions data from FastAPI
-      fetch(url + '/sessions', {
+      fetch(url + '/review', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,21 +60,21 @@ export function Review() {
           }
           return response.json();
         })
-        .then(data => {
-          // Handle the sessions data
-          // Convert ISO timestamp to desired format
-          console.log(data);
-          setSessions(data.map((session: Session) => ({
-            id: session.id,
-            time_stamp: new Date(session.time_stamp),
-            imageSessions: session.image_sessions
-          })));
-          setEmotionData(data.map((session: Session) => ({
-            timestamp: session.time_stamp,
-            joy: session.emotions.joy,
-            sadness: session.emotions.sadness,
-            anger: session.emotions.anger,
-            fear: session.emotions.fear
+        .then(allData => {
+          console.log('API Response:', allData);
+          const formattedSessions = allData.map((data: ReviewData) => ({
+            id: data.id,
+            time_stamp: new Date(data.time_stamp),
+            contents: data.content
+          }));
+          console.log('Formatted Sessions:', formattedSessions);
+          setSessions(formattedSessions);
+          setEmotionData(allData.map((data: ReviewData) => ({
+            time_stamp: data.time_stamp,
+            joy: data.emotions.joy,
+            sadness: data.emotions.sadness,
+            anger: data.emotions.anger,
+            fear: data.emotions.fear
           })));
           setIsLoading(false);
         })
@@ -65,7 +82,7 @@ export function Review() {
           console.error('Error fetching sessions:', error);
         });
     }
-  }, [navigate, user]);
+  }, [navigate, user, url]);
 
   if (isLoading) {
     return (
@@ -76,7 +93,7 @@ export function Review() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="mx-auto p-4 py-8 w-full">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">セッション分析</h1>
         <Button
@@ -88,45 +105,52 @@ export function Review() {
           メインメニューへ戻る
         </Button>
       </div>
-      
+
       <div className="grid gap-8 lg:grid-cols-2">
-        <EmotionGraph data={emotionData} />
+        <EmotionGraph
+        data={emotionData}
+        />
         <SessionList 
           sessions={sessions}
           onSelectSession={setSelectedSession}
         />
       </div>
 
-      <Dialog open={!!selectedSession} onOpenChange={() => setSelectedSession(null)}>
+      <Dialog
+      open={!!selectedSession}
+      onOpenChange={() => setSelectedSession(null)}
+      >
         <DialogContent className="max-w-4xl">
           <DialogTitle>
             セッション詳細 - {selectedSession?.time_stamp?.toLocaleString()}
           </DialogTitle>
           
-          {selectedSession && (
-            <Tabs defaultValue={`image-1`} className="w-full">
+          {selectedSession && Array.isArray(selectedSession.contents) && selectedSession.contents.length > 0 && (
+            <Tabs defaultValue="image-1" className="w-full">
               <TabsList className="w-full justify-start">
-                {selectedSession.imageSessions.map((session, index) => (
+                {Array.from({ length: Math.ceil(selectedSession.contents.length / 7) }, (_, index) => (
                   <TabsTrigger key={index} value={`image-${index + 1}`}>
-                    画像 {session.imageNumber}
+                    画像 {index + 1}
                   </TabsTrigger>
                 ))}
               </TabsList>
 
-              {selectedSession.imageSessions.map((imageSession: ImageSession, index) => (
-                <TabsContent key={index} value={`image-${index + 1}`}>
+              {Array.from({ length: Math.ceil(selectedSession.contents.length / 7) }, (_, imageIndex) => (
+                <TabsContent key={imageIndex} value={`image-${imageIndex + 1}`}>
                   <ScrollArea className="h-[60vh]">
                     <div className="space-y-4 pr-4">
-                      {imageSession.messages.map((message, msgIndex) => (
-                        <Card
-                          key={msgIndex}
-                          className={`p-4 ${
-                            message.isUser ? 'ml-auto bg-primary/10' : 'bg-secondary'
-                          } max-w-[80%]`}
-                        >
-                          {message.content}
-                        </Card>
-                      ))}
+                      {selectedSession.contents
+                        .slice(imageIndex * 7, (imageIndex + 1) * 7)
+                        .map((message: Message, index) => (
+                          <Card
+                            key={index}
+                            className={`p-4 ${
+                              message.role === 'user' ? 'ml-auto bg-primary/10' : 'bg-secondary'
+                            } max-w-[80%]`}
+                          >
+                            {message.content}
+                          </Card>
+                        ))}
                     </div>
                   </ScrollArea>
                 </TabsContent>

@@ -1,17 +1,13 @@
 export interface Message {
+  role: string;
   content: string;
-  isUser: boolean;
-}
-
-export interface ImageSession {
+  chatRound: number;
   imageNumber: number;
-  messages: Message[];
 }
-
 export interface TATSession {
   id: string;
   time_stamp: Date;
-  imageSessions: ImageSession[];
+  contents: Message[];
 }
 
 export interface EmotionData {
@@ -25,7 +21,7 @@ export interface EmotionData {
 export interface Session {
   id: string;
   user_id: string;
-  image_sessions: ImageSession[];
+  contents: Message[];
   time_stamp: Date;
   emotions: EmotionData;
 }

@@ -15,9 +15,9 @@ export function SessionList({ sessions, onSelectSession }: SessionListProps) {
       <h3 className="text-lg font-semibold mb-4">セッション履歴</h3>
       <ScrollArea className="h-[400px] pr-4">
         <div className="space-y-3">
-          {sessions.map((session) => (
+          {sessions.map((session, index) => (
             <Button
-              key={session.id}
+              key={index}
               variant="outline"
               className="w-full justify-start text-left h-auto p-4"
               onClick={() => onSelectSession(session)}
@@ -25,9 +25,6 @@ export function SessionList({ sessions, onSelectSession }: SessionListProps) {
               <div className="flex items-start gap-4">
                 <Images className="w-5 h-5 mt-1" />
                 <div className="flex-1">
-                  <div className="font-medium">
-                    セッション {session.imageSessions.length}枚
-                  </div>
                   <div className="flex items-center text-sm text-muted-foreground mt-1">
                     <Clock className="w-4 h-4 mr-1" />
                     {session.time_stamp.toLocaleString()}
