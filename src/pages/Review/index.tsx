@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft } from 'lucide-react';
 import { EmotionGraph } from '@/components/EmotionGraph';
 import { SessionList } from '@/components/SessionList';
+import { GPTAnalysis } from '@/components/GPTAnalysis';
+import { TATAnalysis } from '@/components/TATAnalysis';
 import type { TATSession, EmotionData, Message } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -19,11 +21,11 @@ interface ReviewData {
   time_stamp: Date;
   content: Message[];
   emotions: {
-    joy: number;
-    sadness: number;
-    anger: number;
-    fear: number;
-  };
+      joy: number;
+      sadness: number;
+      anger: number;
+      fear: number;
+    }
 }
 
 export function Review() {
@@ -31,6 +33,7 @@ export function Review() {
   const [selectedSession, setSelectedSession] = useState<TATSession | null>(null);
   const [sessions, setSessions] = useState<TATSession[]>([]);
   const [emotionData, setEmotionData] = useState<EmotionData[]>([]);
+  const [analysis, setAnalysis] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const url = process.env.NODE_ENV === 'development' 
@@ -62,14 +65,15 @@ export function Review() {
         })
         .then(allData => {
           console.log('API Response:', allData);
-          const formattedSessions = allData.map((data: ReviewData) => ({
+          setAnalysis(allData.user_data[0].GPT_analysis);
+          const formattedSessions = allData.log_data.map((data: ReviewData) => ({
             id: data.id,
-            time_stamp: new Date(data.time_stamp),
+            time_stamp: data.time_stamp,
             contents: data.content
           }));
           console.log('Formatted Sessions:', formattedSessions);
           setSessions(formattedSessions);
-          setEmotionData(allData.map((data: ReviewData) => ({
+          setEmotionData(allData.log_data.map((data: ReviewData) => ({
             time_stamp: data.time_stamp,
             joy: data.emotions.joy,
             sadness: data.emotions.sadness,
@@ -114,6 +118,10 @@ export function Review() {
           sessions={sessions}
           onSelectSession={setSelectedSession}
         />
+        <GPTAnalysis
+          analysis={analysis}
+        />
+        <TATAnalysis/>
       </div>
 
       <Dialog
