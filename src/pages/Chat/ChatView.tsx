@@ -23,6 +23,7 @@ export function ChatView({ imageCount }: ChatViewProps) {
     currentImage,
     showBrainstorming,
     showCompletion,
+    isCompleting,
     messages,
     handleUserMessage,
     setShowBrainstorming
@@ -94,7 +95,7 @@ export function ChatView({ imageCount }: ChatViewProps) {
         />
       )}
 
-      {showCompletion && <CompletionOverlay />}
+      {showCompletion && <CompletionOverlay isCompleting={isCompleting} />}
 
       <ConfirmDialog
         open={showConfirmDialog}

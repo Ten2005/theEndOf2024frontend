@@ -16,7 +16,11 @@ export function Instructions({ onContinue }: InstructionsProps) {
         <div className="space-y-4">
           <section>
             <h3 className="text-lg font-semibold mb-2">概要</h3>
-            <p>TAT（主題統覚検査）と対話を組み合わせた新しいアプローチです。</p>
+            <p>
+              TAT（主題統覚検査）と対話を組み合わせた新しいアプローチです。<br />
+              起承転結のある物語を作成してください。
+            </p>
+            
           </section>
 
           <section>

@@ -3,8 +3,24 @@ import { Card } from "@/components/ui/card";
 import { CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export function CompletionOverlay() {
+interface CompletionOverlayProps {
+  isCompleting: boolean;
+}
+
+export function CompletionOverlay({ isCompleting }: CompletionOverlayProps) {
   const navigate = useNavigate();
+
+  if (isCompleting) {
+    return (
+      <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div className="w-full max-w-md p-6 text-center space-y-6">
+          <div className="flex justify-center">
+          <CheckCircle className="w-16 h-16 text-primary" />
+        </div>
+      </div>
+    </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">

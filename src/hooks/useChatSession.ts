@@ -20,6 +20,7 @@ export function useChatSession(imageCount: number) {
   const [chatRound, setChatRound] = useState(0);
   const [showBrainstorming, setShowBrainstorming] = useState(true);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const url = process.env.NODE_ENV === 'development' 
     ? 'http://localhost:8000'
@@ -88,6 +89,7 @@ export function useChatSession(imageCount: number) {
         };
         console.log(completionData);
         try {
+          setIsCompleting(true);
           await fetch(url + '/complete', {
             method: 'POST',
             headers: {
@@ -98,6 +100,7 @@ export function useChatSession(imageCount: number) {
         } catch (error) {
           console.error('Error sending completion data:', error);
         }
+        setIsCompleting(false);
         setShowCompletion(true);
       }
       return;
@@ -109,6 +112,7 @@ export function useChatSession(imageCount: number) {
     currentImage,
     showBrainstorming,
     showCompletion,
+    isCompleting,
     messages,
     handleUserMessage,
     setShowBrainstorming

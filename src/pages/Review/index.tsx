@@ -11,7 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 import { EmotionGraph } from '@/components/EmotionGraph';
 import { SessionList } from '@/components/SessionList';
 import { GPTAnalysis } from '@/components/GPTAnalysis';
-import { TATAnalysis } from '@/components/TATAnalysis';
+import { Suggestions } from '@/components/Suggestions';
 import type { TATSession, EmotionData, Message } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -28,12 +28,22 @@ interface ReviewData {
     }
 }
 
+interface SuggestionData {
+  anxiety: number;
+  advise: number;
+  fortune_telling: string;
+  religion: string;
+  quote: string;
+  philosophy: string;
+}
+
 export function Review() {
   const navigate = useNavigate();
   const [selectedSession, setSelectedSession] = useState<TATSession | null>(null);
   const [sessions, setSessions] = useState<TATSession[]>([]);
   const [emotionData, setEmotionData] = useState<EmotionData[]>([]);
   const [analysis, setAnalysis] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<SuggestionData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const url = process.env.NODE_ENV === 'development' 
@@ -80,6 +90,7 @@ export function Review() {
             anger: data.emotions.anger,
             fear: data.emotions.fear
           })));
+          setSuggestions(allData.user_data[0].suggestions);
           setIsLoading(false);
         })
         .catch(error => {
@@ -121,7 +132,9 @@ export function Review() {
         <GPTAnalysis
           analysis={analysis}
         />
-        <TATAnalysis/>
+        <Suggestions
+          suggestionData={suggestions}
+        />
       </div>
 
       <Dialog
