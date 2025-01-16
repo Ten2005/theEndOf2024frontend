@@ -29,8 +29,8 @@ interface ReviewData {
 }
 
 interface SuggestionData {
-  anxiety: number;
-  advise: number;
+  anxiety: string;
+  advise: string;
   fortune_telling: string;
   religion: string;
   quote: string;
@@ -43,7 +43,7 @@ export function Review() {
   const [sessions, setSessions] = useState<TATSession[]>([]);
   const [emotionData, setEmotionData] = useState<EmotionData[]>([]);
   const [analysis, setAnalysis] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<SuggestionData[]>([]);
+  const [suggestions, setSuggestions] = useState<SuggestionData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const url = process.env.NODE_ENV === 'development' 
@@ -133,7 +133,14 @@ export function Review() {
           analysis={analysis}
         />
         <Suggestions
-          suggestionData={suggestions}
+          suggestionData={suggestions || {
+            anxiety: '',
+            advise: '',
+            fortune_telling: '',
+            religion: '',
+            quote: '',
+            philosophy: ''
+          }}
         />
       </div>
 

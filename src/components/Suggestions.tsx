@@ -2,8 +2,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card } from '@/components/ui/card';
 
 interface SuggestionData {
-  anxiety: number;
-  advise: number;
+  anxiety: string;
+  advise: string;
   fortune_telling: string;
   religion: string;
   quote: string;
