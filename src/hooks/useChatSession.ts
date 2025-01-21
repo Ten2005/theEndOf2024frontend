@@ -21,6 +21,7 @@ export function useChatSession(imageCount: number) {
   const [showBrainstorming, setShowBrainstorming] = useState(true);
   const [showCompletion, setShowCompletion] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const url = process.env.NODE_ENV === 'development' 
     ? 'http://localhost:8000'
@@ -55,7 +56,9 @@ export function useChatSession(imageCount: number) {
   };
 
   const handleUserMessage = async (content: string) => {
-    const newMessages = [
+    setIsLoading(true);
+    try {
+      const newMessages = [
       ...messages,
       { role: 'user', content, chatRound: chatRound, imageNumber: imageCount }
     ];
@@ -105,7 +108,9 @@ export function useChatSession(imageCount: number) {
       }
       return;
     }
-
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {
@@ -113,6 +118,7 @@ export function useChatSession(imageCount: number) {
     showBrainstorming,
     showCompletion,
     isCompleting,
+    isLoading,
     messages,
     handleUserMessage,
     setShowBrainstorming

@@ -1,5 +1,6 @@
 import { LineChart, ResponsiveContainer } from 'recharts';
 import { Card } from '@/components/ui/card';
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChartLine } from './ChartLine';
 import { ChartAxes } from './ChartAxes';
 import { ChartTooltip } from './ChartTooltip';
@@ -17,25 +18,39 @@ const EMOTION_CONFIGS = [
   { dataKey: 'fear' as const, name: '不安', color: '#a78bfa' },
 ];
 
+// データポイントを間引く関数
+function downsampleData(data: EmotionData[], threshold: number = 20): EmotionData[] {
+  if (data.length <= threshold) return data;
+  
+  const step = Math.ceil(data.length / threshold);
+  return data.filter((_, index) => index % step === 0);
+}
+
 export function EmotionGraph({ data }: EmotionGraphProps) {
+  // データ数が多い場合は間引く
+  const processedData = downsampleData(data);
   return (
     <Card className="p-6">
       <h3 className="text-lg font-semibold mb-4">感情変化の推移</h3>
-      <div className="h-[400px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart 
-            data={data}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
-            <ChartAxes />
-            <ChartTooltip />
-            <ChartLegend />
-            {EMOTION_CONFIGS.map((config) => (
-              <ChartLine key={config.dataKey} {...config} />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <ScrollArea className="h-[500px] pr-4">
+        <div className="min-h-[400px]">
+          <div style={{ width: `${Math.max(100, processedData.length * 50)}%`, minWidth: "100%" }}>
+            <ResponsiveContainer width="100%" height={400}>
+            <LineChart 
+              data={processedData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
+              <ChartAxes />
+              <ChartTooltip />
+              <ChartLegend />
+              {EMOTION_CONFIGS.map((config) => (
+                <ChartLine key={config.dataKey} {...config} />
+              ))}
+            </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </ScrollArea>
     </Card>
   );
 }

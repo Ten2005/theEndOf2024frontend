@@ -17,13 +17,13 @@ interface ChatViewProps {
 
 
 export function ChatView({ imageCount }: ChatViewProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {
     currentImage,
     showBrainstorming,
     showCompletion,
     isCompleting,
+    isLoading,
     messages,
     handleUserMessage,
     setShowBrainstorming
@@ -58,22 +58,21 @@ export function ChatView({ imageCount }: ChatViewProps) {
   };
 
   const handleBrainstormingComplete = async (responses: string[]) => {
-    const combinedResponse = responses.join('\n\n');
-    // 連結文字列に対して要約したものを返す
-    const summary = await summarize(combinedResponse);
-    setShowBrainstorming(false);
-    handleUserMessage(summary);
+    try {
+      const combinedResponse = responses.join('\n\n');
+      // 連結文字列に対して要約したものを返す
+      const summary = await summarize(combinedResponse);
+      setShowBrainstorming(false);
+      await handleUserMessage(summary);
+    } catch (error) {
+      console.error('Error handling brainstorming completion:', error);
+    }
   };
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    setIsLoading(true);
-    try {
-      await handleUserMessage(input);
-      setInput('');
-    } finally {
-      setIsLoading(false);
-    }
+    await handleUserMessage(input);
+    setInput('');
   };
 
   const handleAbort = () => {
@@ -95,7 +94,12 @@ export function ChatView({ imageCount }: ChatViewProps) {
         />
       )}
 
-      {showCompletion && <CompletionOverlay isCompleting={isCompleting} />}
+      {(showCompletion || isLoading) && (
+        <CompletionOverlay 
+          isCompleting={isCompleting}
+          isLoading={isLoading}
+        />
+      )}
 
       <ConfirmDialog
         open={showConfirmDialog}

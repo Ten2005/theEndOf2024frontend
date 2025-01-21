@@ -12,18 +12,18 @@ export function ChartLine({
   dataKey, 
   name, 
   color,
-  strokeWidth = 2,
-  dotSize = 2
+  strokeWidth = 1.5,
+  dotSize = 1
 }: ChartLineProps) {
   return (
     <Line
-      type="monotone"
+      type="basis"
       dataKey={dataKey}
       name={name}
       stroke={color}
       strokeWidth={strokeWidth}
-      dot={{ strokeWidth: dotSize }}
-      activeDot={{ strokeWidth: dotSize, r: 6 }}
+      dot={{ strokeWidth: dotSize, r: 2 }}
+      activeDot={{ strokeWidth: 2, r: 4 }}
     />
   );
 }

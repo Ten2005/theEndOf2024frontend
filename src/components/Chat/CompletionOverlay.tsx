@@ -1,22 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface CompletionOverlayProps {
   isCompleting: boolean;
+  isLoading?: boolean;
 }
 
-export function CompletionOverlay({ isCompleting }: CompletionOverlayProps) {
+export function CompletionOverlay({ isCompleting, isLoading }: CompletionOverlayProps) {
   const navigate = useNavigate();
 
-  if (isCompleting) {
+  if (isCompleting || isLoading) {
     return (
       <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
         <div className="w-full max-w-md p-6 text-center space-y-6">
           <div className="flex justify-center">
-          <CheckCircle className="w-16 h-16 text-primary" />
+          <Loader2 className="w-16 h-16 text-primary animate-spin" />
         </div>
+        <p className="text-lg text-muted-foreground">
+          {isCompleting
+          ?
+          "チャットを終了しています。ページを閉じないでください"
+          : "メッセージを送信中..."}
+        </p>
       </div>
     </div>
     );
