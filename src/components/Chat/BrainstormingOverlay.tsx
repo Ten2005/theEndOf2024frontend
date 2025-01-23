@@ -2,25 +2,48 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-// import { CheckCircle } from 'lucide-react';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from "@/components/ui/carousel";
+
+type Gender = 'male' | 'female' | 'unisex';
 
 interface BrainstormingOverlayProps {
   imageCount: number;
   currentImage: number;
+  gender: Gender;
   onComplete: (responses: string[]) => void;
 }
 
 export function BrainstormingOverlay({ 
   imageCount, 
   currentImage, 
+  gender,
   onComplete 
 }: BrainstormingOverlayProps) {
-  // const [responses, setResponses] = useState<string[]>([]);
   const [currentResponse, setCurrentResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const getFilteredVideos = () => {
+    console.log('getFilteredVideos', currentImage, gender);
+    const movieFiles = Object.keys(import.meta.glob('/public/movie/*'))
+      .filter(file => {
+        const fileName = file.split('/').pop() || '';
+        return (
+          fileName.startsWith(`${currentImage}_${gender}_`) || 
+          fileName.startsWith(`${currentImage}_unisex_`)
+        );
+      })
+      .map(file => file.replace('/public', ''));
+
+    return movieFiles;
+  };
+
   const handleSubmitResponse = async () => {
-    // setResponses([...responses, currentResponse.trim()]);
     setCurrentResponse('');
     await handleComplete();
   };
@@ -31,47 +54,49 @@ export function BrainstormingOverlay({
     setIsLoading(false);
   };
 
+  const filteredVideos = getFilteredVideos();
+
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
       <Card className="w-full max-w-2xl p-6 space-y-6 h-[80vh] overflow-y-auto">
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold">画像 {currentImage} / {imageCount}</h2>
+          <h2 className="text-2xl font-bold">動画 {currentImage} / {imageCount}</h2>
           <p className="text-muted-foreground">
-            画像について思うことを自由に入力してください
+            動画について思うことを自由に入力してください
           </p>
         </div>
 
-        <div className="flex justify-center">
-          <div className="w-96 bg-muted flex items-center justify-center overflow-auto">
-            <img
-              src={`/images/${currentImage}.png`}
-              alt={`Image ${currentImage}`}
-              className="max-w-none h-auto"
-              style={{
-                minWidth: "100%",
-                minHeight: "100%",
-                objectFit: "contain"
-              }}
-            />
+        {filteredVideos.length > 0 ? (
+          <Carousel className="w-full max-w-xl mx-auto">
+            <CarouselContent>
+              {filteredVideos.map((videoPath, index) => (
+                <CarouselItem key={index}>
+                  <div className="p-1">
+                    <Card>
+                      <video 
+                        src={videoPath} 
+                        controls 
+                        className="w-full h-auto max-h-[50vh]"
+                      />
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {filteredVideos.length > 1 && (
+              <>
+                <CarouselPrevious />
+                <CarouselNext />
+              </>
+            )}
+          </Carousel>
+        ) : (
+          <div className="text-center text-red-500">
+            選択された条件に合う動画がありません
           </div>
-        </div>
+        )}
 
         <div className="space-y-4">
-          {/* <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">
-              入力回数: {responses.length}（制限なし）
-            </span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleComplete}
-              disabled={responses.length === 0 || isLoading}
-            >
-              <CheckCircle className="w-4 h-4 mr-2" />
-              完了
-            </Button>
-          </div> */}
-
           <div className="space-y-2">
             <Textarea
               value={currentResponse}

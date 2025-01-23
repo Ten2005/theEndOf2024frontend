@@ -1,4 +1,4 @@
-import { MessageSquare, FileText } from 'lucide-react';
+import { MessageSquare, FileText, MessageCircle } from 'lucide-react';
 import { FeatureCard } from '@/components/FeatureCard';
 import { BackgroundGrid } from '@/components/BackgroundGrid';
 
@@ -25,13 +25,21 @@ export function Main() {
               glowColor="from-blue-500/20"
             />
           </div>
-          
           <div className="animate-float-delayed">
             <FeatureCard
               icon={<FileText className="w-8 h-8" />}
               title="Review"
-              description="分析結果の確認により、内省を促す。"
+              description="分析結果を確認し内省を促す。"
               href="/review"
+              glowColor="from-purple-500/20"
+            />
+          </div>
+          <div className="animate-float-delayed">
+            <FeatureCard
+              icon={<MessageCircle className="w-8 h-8" />}
+              title="Ten Ox-Herding Pictures"
+              description="十牛図を用いて自己探究を促進。"
+              href="/ten-ox-herding"
               glowColor="from-purple-500/20"
             />
           </div>

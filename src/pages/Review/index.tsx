@@ -83,7 +83,7 @@ export function Review() {
           }));
           console.log('Formatted Sessions:', formattedSessions);
           setSessions(formattedSessions);
-          setEmotionData(allData.log_data.map((data: ReviewData) => ({
+          setEmotionData(allData.log_data.slice(-10).map((data: ReviewData) => ({
             time_stamp: data.time_stamp,
             joy: data.emotions.joy,
             sadness: data.emotions.sadness,

@@ -1,21 +1,30 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
+type Gender = 'male' | 'female' | 'unisex';
+
 interface Message {
   role: string;
   content: string;
   chatRound: number;
   imageNumber: number;
+  gender: Gender;
 }
 
 // Add interface for completion request to match Python model
 interface CompleteRequest {
-  user_id: string;  // Make this required to match Python model
+  user_id: string;
   messages: Message[];
   timestamp: string;
+  gender: Gender;
 }
 
-export function useChatSession(imageCount: number) {
+interface UseChatSessionParams {
+  imageCount: number;
+  gender: Gender;
+}
+
+export function useChatSession({ imageCount, gender }: UseChatSessionParams) {
   const [currentImage, setCurrentImage] = useState(1);
   const [chatRound, setChatRound] = useState(0);
   const [showBrainstorming, setShowBrainstorming] = useState(true);
@@ -60,7 +69,13 @@ export function useChatSession(imageCount: number) {
     try {
       const newMessages = [
       ...messages,
-      { role: 'user', content, chatRound: chatRound, imageNumber: imageCount }
+      { 
+        role: 'user', 
+        content, 
+        chatRound: chatRound, 
+        imageNumber: currentImage,
+        gender: gender 
+      }
     ];
 
     setMessages(newMessages);
@@ -72,7 +87,8 @@ export function useChatSession(imageCount: number) {
         role: 'assistant',
         content: response,
         chatRound: chatRound,
-        imageNumber: imageCount
+        imageNumber: currentImage,
+        gender: gender
       });
       setMessages(newMessages);
       setChatRound(chatRound + 1);
@@ -86,9 +102,10 @@ export function useChatSession(imageCount: number) {
       } else {
         // すべての画像セッション完了
         const completionData: CompleteRequest = {
-          user_id: user?.id || '',  // Add fallback for type safety
+          user_id: user?.id || '',
           messages: newMessages,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          gender: gender
         };
         console.log(completionData);
         try {

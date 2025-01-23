@@ -4,13 +4,16 @@ import { ImageSelector } from './ImageSelector';
 import { ChatView } from './ChatView';
 
 type Stage = 'instructions' | 'imageSelect' | 'chat';
+type Gender = 'male' | 'female';
 
 export function Chat() {
   const [stage, setStage] = useState<Stage>('instructions');
   const [imageCount, setImageCount] = useState(0);
+  const [gender, setGender] = useState<Gender>('male');
 
-  const handleImageSelect = (count: number) => {
+  const handleImageSelect = (count: number, selectedGender: Gender) => {
     setImageCount(count);
+    setGender(selectedGender);
     setStage('chat');
   };
 
@@ -25,7 +28,10 @@ export function Chat() {
       )}
       
       {stage === 'chat' && (
-        <ChatView imageCount={imageCount} />
+        <ChatView 
+          imageCount={imageCount} 
+          gender={gender} 
+        />
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,11 +13,16 @@ import { useChatSession } from '@/hooks/useChatSession';
 
 interface ChatViewProps {
   imageCount: number;
+  gender?: 'male' | 'female' | 'unisex';
 }
 
 
-export function ChatView({ imageCount }: ChatViewProps) {
+export function ChatView({ imageCount, gender = 'male' }: ChatViewProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const finalGender = state?.gender || gender;
+
   const {
     currentImage,
     showBrainstorming,
@@ -27,7 +32,10 @@ export function ChatView({ imageCount }: ChatViewProps) {
     messages,
     handleUserMessage,
     setShowBrainstorming
-  } = useChatSession(imageCount);
+  } = useChatSession({ 
+    imageCount, 
+    gender: finalGender 
+  });
   
   const [input, setInput] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -86,13 +94,14 @@ export function ChatView({ imageCount }: ChatViewProps) {
 
   return (
     <div className="h-screen flex flex-col items-center justify-center p-4">
-      {showBrainstorming && (
-        <BrainstormingOverlay
-          imageCount={imageCount}
-          currentImage={currentImage}
-          onComplete={handleBrainstormingComplete}
-        />
-      )}
+  {showBrainstorming && (
+    <BrainstormingOverlay
+      imageCount={imageCount}
+      currentImage={currentImage}
+      gender={finalGender}
+      onComplete={handleBrainstormingComplete}
+    />
+  )}
 
       {(showCompletion || isLoading) && (
         <CompletionOverlay 
