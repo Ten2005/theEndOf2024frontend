@@ -7,62 +7,62 @@ const oxHerdingStages = [
   {
     level: 1,
     title: "尋牛 (Seeking the Ox)",
-    description: "初心者レベル。自己探求の始まり。自分の本質や目的を見出そうとする最初の段階。",
-    imageUrl: "/images/1.png"
+    description: "修行の始まり。「真理」を求め、探し始める段階。自分の迷いや本質への無知に気づく。",
+    imageUrl: "/images/Oxherding_pictures,_No._1.jpg"
   },
   {
     level: 2,
     title: "見跡 (Seeing the Tracks)",
-    description: "初級者レベル。自己の痕跡を発見し、潜在的な可能性に気づき始める。",
-    imageUrl: "/images/2.png"
+    description: "牛の足跡（悟りへの手がかり）を見つけ、手がかりを得る。",
+    imageUrl: "/images/Oxherding_pictures,_No._2.jpg"
   },
   {
     level: 3,
     title: "見牛 (Glimpsing the Ox)",
-    description: "中級者レベル初期。自己の本質を部分的に認識し始める。",
-    imageUrl: "/images/3.png"
+    description: "ついに牛（真理）の姿をちらりと捉えるが、まだ完全には制御できていない。",
+    imageUrl: "/images/Oxherding_pictures,_No._3.jpg"
   },
   {
     level: 4,
     title: "得牛 (Catching the Ox)",
-    description: "中級者レベル中期。自己の本質を捕らえ始め、コントロールし始める。",
-    imageUrl: "/images/4.png"
+    description: "牛を捕まえることに成功するが、牛（自分の心）はまだ暴れがちで、制御が必要。",
+    imageUrl: "/images/Oxherding_pictures,_No._4.jpg"
   },
   {
     level: 5,
     title: "牧牛 (Herding the Ox)",
-    description: "中級者レベル後期。自己の本質を徐々に理解し、コントロールする能力を高める。",
-    imageUrl: "/images/5.png"
+    description: "牛を飼い慣らし、心を安定させて修行が進む段階。",
+    imageUrl: "/images/Oxherding_pictures,_No._5.jpg"
   },
   {
     level: 6,
     title: "騎牛帰家 (Riding the Ox Home)",
-    description: "上級者レベル初期。自己の本質を深く理解し、内なる平和を感じ始める。",
-    imageUrl: "/images/6.png"
+    description: "悟りが身近になり、心が穏やかで自由な境地に達する。",
+    imageUrl: "/images/Oxherding_pictures,_No._6.jpg"
   },
   {
     level: 7,
     title: "忘牛存人 (Ox Forgotten, Self Remains)",
-    description: "上級者レベル中期。自己と本質の区別が曖昧になり、より高次の意識に近づく。",
-    imageUrl: "/images/7.png"
+    description: "真理への執着すら手放し、悟りの本質が明らかになる。",
+    imageUrl: "/images/Oxherding_pictures,_No._7.jpg"
   },
   {
     level: 8,
     title: "人牛倶忘 (Both Ox and Self Forgotten)",
-    description: "上級者レベル後期。自己と本質の概念を超越し、純粋な意識状態に達する。",
-    imageUrl: "/images/8.png"
+    description: "自他の区別が消え、すべてを超越した境地。",
+    imageUrl: "/images/Oxherding_pictures,_No._8.jpg"
   },
   {
     level: 9,
     title: "返本還源 (Returning to the Origin)",
-    description: "熟達者レベル。究極の悟りと、すべてのものとの根本的なつながりを理解する。",
-    imageUrl: "/images/9.png"
+    description: "世界や自然と一体となり、悟りの境地が完全に日常化する。",
+    imageUrl: "/images/Oxherding_pictures,_No._9.jpg"
   },
   {
     level: 10,
     title: "入鄽垂手 (Entering the Marketplace with Helping Hands)",
-    description: "マスターレベル。悟りを得た後、慈悲と知恵を持って世界に貢献する。",
-    imageUrl: "/images/1.png"
+    description: "社会や日常生活に戻り、修行者としての悟りを他者に分かち合い、ありのままの姿で生きる。",
+    imageUrl: "/images/Oxherding_pictures,_No._10.jpg"
   }
 ];
 
