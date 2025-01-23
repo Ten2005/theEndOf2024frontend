@@ -71,16 +71,21 @@ export const TenOxHerdingPage: React.FC = () => {
   const userLevel = 1;
   const userAdvice = "ここにユーザーのアドバイスを表示します。";
   const [selectedStage, setSelectedStage] = useState<typeof oxHerdingStages[0] | null>(null);
+  
+  // ランダムな位置を生成する関数を追加
+  const generateRandomPositions = () => oxHerdingStages.map(() => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: 0.5 * (Math.random() > 0.5 ? 1 : -1),
+    vy: 0.5 * (Math.random() > 0.5 ? 1 : -1)
+  }));
+
   const [imagePositions, setImagePositions] = useState<Array<{x: number, y: number, vx: number, vy: number}>>(
-    oxHerdingStages.map(() => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vx: 0.5 * (Math.random() > 0.5 ? 1 : -1),
-      vy: 0.5 * (Math.random() > 0.5 ? 1 : -1)
-    }))
+    generateRandomPositions()
   );
 
   useEffect(() => {
+    // 位置の更新のための interval
     const updatePositions = () => {
       setImagePositions(prev => prev.map(pos => {
         const newX = pos.x + pos.vx;
@@ -104,9 +109,17 @@ export const TenOxHerdingPage: React.FC = () => {
       }));
     };
 
-    const interval = setInterval(updatePositions, 16);
+    const positionInterval = setInterval(updatePositions, 16);
+    
+    // 3秒ごとに位置をリセットする interval を追加
+    const resetInterval = setInterval(() => {
+      setImagePositions(generateRandomPositions());
+    }, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(positionInterval);
+      clearInterval(resetInterval);
+    };
   }, []);
 
   return (
