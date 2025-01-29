@@ -10,8 +10,6 @@ interface Message {
   imageNumber: number;
   gender: Gender;
 }
-
-// Add interface for completion request to match Python model
 interface CompleteRequest {
   user_id: string;
   messages: Message[];
@@ -64,67 +62,69 @@ export function useChatSession({ imageCount, gender }: UseChatSessionParams) {
     }
   };
 
+  const createMessage = (role: 'user' | 'assistant', content: string) => ({
+    role,
+    content,
+    chatRound,
+    imageNumber: currentImage,
+    gender
+  });
+
+  const handleChatRoundCompletion = async (newMessages: Message[]) => {
+    await Promise.resolve(setMessages(newMessages));
+    
+    if (currentImage < imageCount) {
+      setCurrentImage(currentImage + 1);
+      setChatRound(0);
+      setShowBrainstorming(true);
+      return;
+    }
+
+    await handleFinalCompletion(newMessages);
+  };
+
+  const handleFinalCompletion = async (messages: Message[]) => {
+    const completionData: CompleteRequest = {
+      user_id: user?.id || '',
+      messages,
+      timestamp: new Date().toISOString(),
+      gender
+    };
+
+    try {
+      setIsCompleting(true);
+      await fetch(url + '/complete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(completionData),
+      });
+    } catch (error) {
+      console.error('Error sending completion data:', error);
+    } finally {
+      setIsCompleting(false);
+      setShowCompletion(true);
+    }
+  };
+
   const handleUserMessage = async (content: string) => {
     setIsLoading(true);
     try {
       const newMessages = [
-      ...messages,
-      { 
-        role: 'user', 
-        content, 
-        chatRound: chatRound, 
-        imageNumber: currentImage,
-        gender: gender 
-      }
-    ];
-
-    setMessages(newMessages);
-
-    if (chatRound < CHAT_ROUNDS) {
-      const response = await generateResponse(newMessages);
-      // AIの応答を追加
-      newMessages.push({
-        role: 'assistant',
-        content: response,
-        chatRound: chatRound,
-        imageNumber: currentImage,
-        gender: gender
-      });
+        ...messages,
+        createMessage('user', content)
+      ];
       setMessages(newMessages);
-      setChatRound(chatRound + 1);
-    } else {
-      await Promise.resolve(setMessages(newMessages));
-      // 3往復完了後
-      if (currentImage < imageCount) {
-        setCurrentImage(currentImage + 1);
-        setChatRound(0);
-        setShowBrainstorming(true);
+
+      if (chatRound < CHAT_ROUNDS) {
+        const response = await generateResponse(newMessages);
+        newMessages.push(createMessage('assistant', response));
+        setMessages(newMessages);
+        setChatRound(chatRound + 1);
       } else {
-        // すべての画像セッション完了
-        const completionData: CompleteRequest = {
-          user_id: user?.id || '',
-          messages: newMessages,
-          timestamp: new Date().toISOString(),
-          gender: gender
-        };
-        console.log(completionData);
-        try {
-          setIsCompleting(true);
-          await fetch(url + '/complete', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(completionData),
-          });
-        } catch (error) {
-          console.error('Error sending completion data:', error);
-        }
-        setIsCompleting(false);
-        setShowCompletion(true);
+        await handleChatRoundCompletion(newMessages);
       }
-      return;
-    }
     } finally {
       setIsLoading(false);
     }

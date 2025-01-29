@@ -16,7 +16,7 @@ export function Main() {
         </h1>
         
         <div className="grid gap-8 md:grid-cols-2 w-full max-w-5xl perspective-1000">
-          <div className="animate-float-slow">
+          <div className="">
             <FeatureCard
               icon={<MessageSquare className="w-8 h-8" />}
               title="TAT×Chat"
@@ -25,7 +25,7 @@ export function Main() {
               glowColor="from-blue-500/20"
             />
           </div>
-          <div className="animate-float-delayed">
+          <div className="">
             <FeatureCard
               icon={<FileText className="w-8 h-8" />}
               title="Review"
@@ -34,7 +34,7 @@ export function Main() {
               glowColor="from-purple-500/20"
             />
           </div>
-          <div className="animate-float-delayed">
+          <div className="">
             <FeatureCard
               icon={<MessageCircle className="w-8 h-8" />}
               title="Ten Ox-Herding Pictures"

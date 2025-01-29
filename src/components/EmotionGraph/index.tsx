@@ -18,7 +18,6 @@ const EMOTION_CONFIGS = [
   { dataKey: 'fear' as const, name: '不安', color: '#a78bfa' },
 ];
 
-// データポイントを間引く関数
 function downsampleData(data: EmotionData[], threshold: number = 20): EmotionData[] {
   if (data.length <= threshold) return data;
   
@@ -27,7 +26,6 @@ function downsampleData(data: EmotionData[], threshold: number = 20): EmotionDat
 }
 
 export function EmotionGraph({ data }: EmotionGraphProps) {
-  // データ数が多い場合は間引く
   const processedData = downsampleData(data);
   return (
     <Card className="p-6">

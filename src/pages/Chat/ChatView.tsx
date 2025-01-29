@@ -39,39 +39,38 @@ export function ChatView({ imageCount, gender = 'male' }: ChatViewProps) {
   
   const [input, setInput] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const url = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:8000'
-    : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
+  // const url = process.env.NODE_ENV === 'development' 
+  //   ? 'http://localhost:8000'
+  //   : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
 
-  const summarize = async (text: string) => {
-    try {
-      const response = await fetch(url + '/summarize', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text }),
-      });
+  // const summarize = async (text: string) => {
+  //   try {
+  //     const response = await fetch(url + '/summarize', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ text }),
+  //     });
       
-      if (!response.ok) {
-        throw new Error('Summarization failed');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Summarization failed');
+  //     }
 
-      const data = await response.json();
-      return data.summary;
-    } catch (error) {
-      console.error('Error summarizing text:', error);
-      return text;
-    }
-  };
+  //     const data = await response.json();
+  //     return data.summary;
+  //   } catch (error) {
+  //     console.error('Error summarizing text:', error);
+  //     return text;
+  //   }
+  // };
 
   const handleBrainstormingComplete = async (responses: string[]) => {
     try {
       const combinedResponse = responses.join('\n\n');
-      // 連結文字列に対して要約したものを返す
-      const summary = await summarize(combinedResponse);
+      // const summary = await summarize(combinedResponse);
       setShowBrainstorming(false);
-      await handleUserMessage(summary);
+      await handleUserMessage(combinedResponse);
     } catch (error) {
       console.error('Error handling brainstorming completion:', error);
     }

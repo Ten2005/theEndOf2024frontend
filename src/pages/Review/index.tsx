@@ -14,7 +14,6 @@ import { GPTAnalysis } from '@/components/GPTAnalysis';
 import { Suggestions } from '@/components/Suggestions';
 import type { TATSession, EmotionData, Message } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
-
 interface ReviewData {
   id: string;
   user_id: string;
@@ -27,7 +26,6 @@ interface ReviewData {
       fear: number;
     }
 }
-
 interface SuggestionData {
   anxiety: string;
   advise: string;
@@ -57,7 +55,6 @@ export function Review() {
       navigate('/login');
     }
     if (user) {
-      // Get sessions data from FastAPI
       fetch(url + '/review', {
         method: 'POST',
         headers: {
@@ -74,14 +71,12 @@ export function Review() {
           return response.json();
         })
         .then(allData => {
-          console.log('API Response:', allData);
           setAnalysis(allData.user_data[0].GPT_analysis);
           const formattedSessions = allData.log_data.map((data: ReviewData) => ({
             id: data.id,
             time_stamp: data.time_stamp,
             contents: data.content
           }));
-          console.log('Formatted Sessions:', formattedSessions);
           setSessions(formattedSessions);
           setEmotionData(allData.log_data.slice(-10).map((data: ReviewData) => ({
             time_stamp: data.time_stamp,

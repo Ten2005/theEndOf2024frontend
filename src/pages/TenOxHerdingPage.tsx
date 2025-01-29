@@ -70,8 +70,8 @@ const oxHerdingStages = [
 export const TenOxHerdingPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedStage, setSelectedStage] = useState<typeof oxHerdingStages[0] | null>(null);
-  const [userAdvice, setUserAdvice] = useState<string>('データがありません、初期状態です');
-  const [userLevel, setUserLevel] = useState<number>(1);
+  const [userAdvice, setUserAdvice] = useState<string>('接続に失敗しました。');
+  const [userLevel, setUserLevel] = useState<number>();
   const { user } = useAuth();
   const url = process.env.NODE_ENV === 'development' 
   ? 'http://localhost:8000'
@@ -171,8 +171,8 @@ export const TenOxHerdingPage: React.FC = () => {
       </button>
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="flex flex-col items-center justify-center">
-          <h1 className="text-foreground text-8xl font-bold mb-4">十牛図</h1>
-          <p className="text-muted-foreground text-4xl font-bold">Ten Bulls</p>
+          <h1 className="text-foreground text-4xl md:text-6xl lg:text-8xl font-bold mb-2 md:mb-4">十牛図</h1>
+          <p className="text-muted-foreground text-xl md:text-2xl lg:text-4xl font-bold">Ten Bulls</p>
         </div>
       </div>
       {oxHerdingStages.map((stage, index) => (
@@ -206,7 +206,7 @@ export const TenOxHerdingPage: React.FC = () => {
           <img 
             src={stage.imageUrl} 
             alt={stage.title}
-            className={`w-24 h-24 rounded-full object-cover border-2 shadow-lg
+            className={`w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full object-cover border-2 shadow-lg
               ${stage.level === userLevel ? 'border-blue-500' : 'border-white'}`}
             style={{
               background: stage.level === userLevel 
@@ -256,7 +256,7 @@ export const TenOxHerdingPage: React.FC = () => {
               <img 
                 src={selectedStage.imageUrl} 
                 alt={selectedStage.title} 
-                className="w-48 h-48 rounded-full object-cover"
+                className="w-24 h-24 md:w-32 md:h-32 lg:w-48 lg:h-48 rounded-full object-cover"
               />
               <DialogDescription className="text-muted-foreground">
                 <p className="mb-4">レベル{selectedStage.level}：{selectedStage.description}</p>
