@@ -16,17 +16,19 @@ import {
 } from "@/components/ui/carousel";
 
 type Gender = 'male' | 'female';
+type MediaType = 'image' | 'video';
 
 interface ImageSelectorProps {
-  onSelect: (count: number, gender: Gender) => void;
+  onSelect: (count: number, gender: Gender, mediaType: MediaType) => void;
 }
 
 export function ImageSelector({ onSelect }: ImageSelectorProps) {
   const [movieCount, setMovieCount] = useState<number | null>(null);
   const [gender, setGender] = useState<Gender | null>(null);
+  const [mediaType, setMediaType] = useState<MediaType | null>(null);
 
   const getFilteredImages = () => {
-    if (!movieCount || !gender) return [];
+    if (!movieCount || !gender || !mediaType) return [];
 
     const movieFiles = Object.keys(import.meta.glob('/public/movie/*'))
       .filter(file => {
@@ -38,22 +40,40 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
       })
       .map(file => file.replace('/public', ''));
 
-    return movieFiles;
+    const imageFiles = Object.keys(import.meta.glob('/public/image/*'))
+      .filter(file => {
+        const fileName = file.split('/').pop() || '';
+        return fileName.startsWith(`${movieCount}_${gender}_`);
+      })
+      .map(file => file.replace('/public', ''));
+
+    if (mediaType === 'image') {
+      return imageFiles;
+    } else {
+      return movieFiles;
+    }
   };
 
   const filteredImages = getFilteredImages();
 
   const handleMovieCountSelect = (value: string) => {
     setMovieCount(Number(value));
-    if (gender) {
-      onSelect(Number(value), gender);
+    if (gender && mediaType) {
+      onSelect(Number(value), gender, mediaType);
+    }
+  };
+
+  const handleMediaSelect = (value: MediaType) => {
+    setMediaType(value);
+    if (movieCount && gender) {
+      onSelect(movieCount, gender, value);
     }
   };
 
   const handleGenderSelect = (value: Gender) => {
     setGender(value);
-    if (movieCount) {
-      onSelect(movieCount, value);
+    if (movieCount && mediaType) {
+      onSelect(movieCount, value, mediaType);
     }
   };
 
@@ -76,6 +96,16 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
                 {num}枚
               </SelectItem>
             ))}
+          </SelectContent>
+        </Select>
+
+        <Select onValueChange={handleMediaSelect}>
+          <SelectTrigger>
+            <SelectValue placeholder="メディアタイプを選択" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="video">動画</SelectItem>
+            <SelectItem value="image">画像</SelectItem>
           </SelectContent>
         </Select>
 
@@ -113,7 +143,7 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
 
         {movieCount && gender && filteredImages.length === 0 && (
           <p className="text-sm text-red-500 text-center">
-            選択された条件に合う動画がありません
+            選択された条件に合うメディアがありません
           </p>
         )}
 

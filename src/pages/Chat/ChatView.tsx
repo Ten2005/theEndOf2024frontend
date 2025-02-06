@@ -14,10 +14,11 @@ import { useChatSession } from '@/hooks/useChatSession';
 interface ChatViewProps {
   imageCount: number;
   gender?: 'male' | 'female' | 'unisex';
+  mediaType: string;
 }
 
 
-export function ChatView({ imageCount, gender = 'male' }: ChatViewProps) {
+export function ChatView({ imageCount, gender = 'male', mediaType }: ChatViewProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
@@ -34,36 +35,11 @@ export function ChatView({ imageCount, gender = 'male' }: ChatViewProps) {
     setShowBrainstorming
   } = useChatSession({ 
     imageCount, 
-    gender: finalGender 
+    gender: finalGender,
   });
   
   const [input, setInput] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  // const url = process.env.NODE_ENV === 'development' 
-  //   ? 'http://localhost:8000'
-  //   : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
-
-  // const summarize = async (text: string) => {
-  //   try {
-  //     const response = await fetch(url + '/summarize', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ text }),
-  //     });
-      
-  //     if (!response.ok) {
-  //       throw new Error('Summarization failed');
-  //     }
-
-  //     const data = await response.json();
-  //     return data.summary;
-  //   } catch (error) {
-  //     console.error('Error summarizing text:', error);
-  //     return text;
-  //   }
-  // };
 
   const handleBrainstormingComplete = async (responses: string[]) => {
     try {
@@ -98,6 +74,7 @@ export function ChatView({ imageCount, gender = 'male' }: ChatViewProps) {
       imageCount={imageCount}
       currentImage={currentImage}
       gender={finalGender}
+      mediaType={mediaType}
       onComplete={handleBrainstormingComplete}
     />
   )}

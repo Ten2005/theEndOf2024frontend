@@ -5,15 +5,17 @@ import { ChatView } from './ChatView';
 
 type Stage = 'instructions' | 'imageSelect' | 'chat';
 type Gender = 'male' | 'female';
+type MediaType = 'image' | 'video';
 
 export function Chat() {
   const [stage, setStage] = useState<Stage>('instructions');
   const [imageCount, setImageCount] = useState(0);
   const [gender, setGender] = useState<Gender>('male');
-
-  const handleImageSelect = (count: number, selectedGender: Gender) => {
+  const [mediaType, setMediaType] = useState<MediaType>('image');
+  const handleImageSelect = (count: number, selectedGender: Gender, selectedMediaType: MediaType) => {
     setImageCount(count);
     setGender(selectedGender);
+    setMediaType(selectedMediaType);
     setStage('chat');
   };
 
@@ -31,6 +33,7 @@ export function Chat() {
         <ChatView 
           imageCount={imageCount} 
           gender={gender} 
+          mediaType={mediaType}
         />
       )}
     </div>
