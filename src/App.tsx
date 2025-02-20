@@ -8,6 +8,7 @@ import { Chat } from '@/pages/Chat';
 import { Review } from '@/pages/Review';
 import { Login } from '@/pages/Login';
 import { TenOxHerdingPage } from '@/pages/TenOxHerdingPage';
+import { Feedback } from '@/pages/Feedback';
 export default function App() {
   return (
     <AuthProvider>
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/chat" element={<AuthGuard><Chat /></AuthGuard>} />
           <Route path="/review" element={<AuthGuard><Review /></AuthGuard>} />
           <Route path="/ten-ox-herding" element={<AuthGuard><TenOxHerdingPage /></AuthGuard>} />
+          <Route path="/feedback" element={<AuthGuard><Feedback /></AuthGuard>} />
         </Routes>
         <Toaster />
       </Router>

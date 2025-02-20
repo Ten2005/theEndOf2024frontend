@@ -43,6 +43,14 @@ export function Main() {
               glowColor="from-purple-500/20"
             />
           </div>
+          <div className="">
+            <FeatureCard
+              icon={<MessageCircle className="w-8 h-8" />}
+              title="Feedback"
+              description="フィードバックを送信。"
+              href="/feedback"
+            />
+          </div>
         </div>
       </div>
     </div>
