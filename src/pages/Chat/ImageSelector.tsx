@@ -80,12 +80,12 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center">
     <Card className="max-w-md mx-auto p-6 w-full max-w-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">動画と性別を選択</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">画と性別を選択</h2>
       
       <div className="space-y-6">
         <Select onValueChange={handleMovieCountSelect}>
           <SelectTrigger>
-            <SelectValue placeholder="動画枚数を選択" />
+            <SelectValue placeholder="画の枚数を選択" />
           </SelectTrigger>
           <SelectContent>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
