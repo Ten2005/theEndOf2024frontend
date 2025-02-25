@@ -88,12 +88,14 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
             <SelectValue placeholder="画の枚数を選択" />
           </SelectTrigger>
           <SelectContent>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+            {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => ( */}
+            {[5].map((num) => (
               <SelectItem
               key={num}
               value={num.toString()}
               >
-                {num}枚
+                {/* {num}枚 */}
+                テスト用
               </SelectItem>
             ))}
           </SelectContent>
@@ -114,8 +116,9 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
             <SelectValue placeholder="性別を選択" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="male">男性</SelectItem>
-            <SelectItem value="female">女性</SelectItem>
+            <SelectItem value="male">テスト用</SelectItem>
+            {/* <SelectItem value="male">男性</SelectItem> */}
+            {/* <SelectItem value="female">女性</SelectItem> */}
           </SelectContent>
         </Select>
 
