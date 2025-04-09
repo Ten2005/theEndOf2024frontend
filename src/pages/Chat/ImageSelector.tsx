@@ -89,7 +89,7 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
           </SelectTrigger>
           <SelectContent>
             {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => ( */}
-            {[5].map((num) => (
+            {[1].map((num) => (
               <SelectItem
               key={num}
               value={num.toString()}

@@ -27,7 +27,9 @@ export function SessionList({ sessions, onSelectSession }: SessionListProps) {
                 <div className="flex-1">
                   <div className="flex items-center text-sm text-muted-foreground mt-1">
                     <Clock className="w-4 h-4 mr-1" />
-                    {session.time_stamp.toLocaleString()}
+                    {session.time_stamp instanceof Date 
+                      ? session.time_stamp.toLocaleString()
+                      : '日時不明'}
                   </div>
                 </div>
               </div>

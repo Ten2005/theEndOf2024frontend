@@ -74,12 +74,12 @@ export function Review() {
           setAnalysis(allData.user_data[0].GPT_analysis);
           const formattedSessions = allData.log_data.map((data: ReviewData) => ({
             id: data.id,
-            time_stamp: data.time_stamp,
+            time_stamp: data.time_stamp ? new Date(data.time_stamp) : new Date(),
             contents: data.content
           }));
           setSessions(formattedSessions);
           setEmotionData(allData.log_data.slice(-10).map((data: ReviewData) => ({
-            time_stamp: data.time_stamp,
+            time_stamp: data.time_stamp ? new Date(data.time_stamp) : new Date(),
             joy: data.emotions.joy,
             sadness: data.emotions.sadness,
             anger: data.emotions.anger,
