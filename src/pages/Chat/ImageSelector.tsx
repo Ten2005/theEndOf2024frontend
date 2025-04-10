@@ -8,11 +8,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
 } from "@/components/ui/carousel";
 
 type Gender = 'male' | 'female';
@@ -92,7 +92,7 @@ export function ImageSelector({ onSelect }: ImageSelectorProps) {
             {[1].map((num) => (
               <SelectItem
               key={num}
-              value={num.toString()}
+              value={'5'}
               >
                 {/* {num}枚 */}
                 テスト用
