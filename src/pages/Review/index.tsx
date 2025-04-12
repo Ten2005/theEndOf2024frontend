@@ -44,9 +44,7 @@ export function Review() {
   const [suggestions, setSuggestions] = useState<SuggestionData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
-  const url = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:8000'
-    : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
+  const url = 'https://theendof2024backend.onrender.com';
 
   useEffect(() => {
     console.log('Selected Session:', selectedSession);

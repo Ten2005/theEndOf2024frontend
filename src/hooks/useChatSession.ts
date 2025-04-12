@@ -30,9 +30,7 @@ export function useChatSession({ imageCount, gender }: UseChatSessionParams) {
   const [isCompleting, setIsCompleting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const url = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:8000'
-    : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
+  const url = 'https://theendof2024backend.onrender.com';
 
   const { user } = useAuth();
 

@@ -41,9 +41,7 @@ export function Feedback() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [scores, setScores] = useState<{[key: number]: string}>({});
-  const url = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:8000'
-    : 'https://the-end-of-2024-38ff56ee0179.herokuapp.com';
+  const url = 'https://theendof2024backend.onrender.com';
 
   const { toast } = useToast();
 
